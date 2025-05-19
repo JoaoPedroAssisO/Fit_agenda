@@ -1,0 +1,9 @@
+<h2>Finalizar Cadastro - Cliente</h2>
+
+<p>Olá, {{ user.first_name }}! Por favor, preencha os dados abaixo:</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Finalizar Cadastro</button>
+</form>
