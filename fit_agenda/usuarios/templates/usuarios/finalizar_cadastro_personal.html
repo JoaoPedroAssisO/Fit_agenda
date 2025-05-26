@@ -1,0 +1,48 @@
+<h2>Finalizar Cadastro - Personal Trainer</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <fieldset>
+        <legend>Informações do Personal Trainer</legend>
+        {{ form.non_field_errors }}
+        <p>
+            {{ form.especialidades.label_tag }}<br>
+            {{ form.especialidades }}
+        </p>
+        <p>
+            {{ form.precos.label_tag }}<br>
+            {{ form.precos }}
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Horários Disponíveis (Preencha apenas os dias e horários que trabalha)</legend>
+        {{ formset.management_form }}
+
+        {% for horario_form in formset %}
+            <div style="border:1px solid #ddd; margin-bottom: 10px; padding: 10px;">
+
+                <p>
+                    {{ horario_form.dia_semana.label_tag }}
+                    {{ horario_form.dia_semana }}
+                </p>
+                
+                <label>Manhã: </label>
+                {{ horario_form.horario_inicio_manha }} - {{ horario_form.horario_fim_manha }}<br>
+                
+                <label>Tarde: </label>
+                {{ horario_form.horario_inicio_tarde }} - {{ horario_form.horario_fim_tarde }}<br>
+                
+                <label>Noite: </label>
+                {{ horario_form.horario_inicio_noite }} - {{ horario_form.horario_fim_noite }}<br>
+
+                {% if formset.can_delete %}
+                    <label>Excluir: {{ horario_form.DELETE }}</label>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </fieldset>
+
+    <button type="submit">Salvar</button>
+</form>

@@ -1,35 +1,44 @@
+{% load static %}
+{% load widget_tweaks %}
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitAgenda</title>
+
+  <link rel="stylesheet" href="{% static 'usuarios/telalogin.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="container">
+    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" 
+         alt="Academia" 
+         class="bg-image">
 
-    <div class="login-container">
-        <h1>Cadastro</h1>
+    <div class="login-box">
+      <h1>FitAgenda</h1>
 
-        {% if messages %}
-            <div class="error-message">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Entrar</button>
-        </form>
-
-        <div class="signup-link">
-            <p><a href="">Cadastre-se</a></p>
+      {% if messages %}
+        <div class="error-message">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
         </div>
-    </div>
+      {% endif %}
 
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.username|add_class:"form-input"|attr:"placeholder:Login" }}
+          {{ form.password|add_class:"form-input"|attr:"placeholder:Senha" }}
+          <button type="submit" class="submit-btn">Entrar</button>
+        </div>
+      </form>
+
+      <a href="{% url 'cadastro_geral' %}" class="register-link">Cadastre-se</a>
+    </div>
+  </div>
 </body>
 </html>

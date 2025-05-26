@@ -1,9 +1,60 @@
-<!-- templates/usuarios/cadastro_geral.html -->
-<h2>Cadastro de Usuário</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% load static %}
+{% load widget_tweaks %}
 
-    <button type="submit">Cadastrar</button>
-    <a href="{% url 'login' %}"><button type="button">Voltar</button></a>
-</form>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - FitAgenda</title>
+  <link rel="stylesheet" href="{% static 'usuarios/cadastro.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+         alt="Academia"
+         class="bg-image" />
+
+    <div class="signup-box">
+      <h1 class="cadastro-title">Cadastro</h1>
+
+      {% if messages %}
+        <div class="error-message">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.first_name|add_class:"form-input" | attr:"placeholder:Primeiro Nome" }}
+          {{ form.last_name|add_class:"form-input" | attr:"placeholder:Sobrenome" }}
+          {{ form.telefone|add_class:"form-input" | attr:"placeholder:Telefone" }}
+          {{ form.email|add_class:"form-input" | attr:"placeholder:E-mail" }}
+          {{ form.username|add_class:"form-input" | attr:"placeholder:Nome de usuário" }}
+          {{ form.senha|add_class:"form-input" | attr:"placeholder:Senha" }}
+
+          <div class="user-type">
+            <label class="radio-option">
+              <input type="radio" name="tipo_usuario" value="cliente" {% if form.tipo_usuario.value == "cliente" %}checked{% endif %}>
+              <span class="radio-checkmark"></span>
+              <span class="radio-label">Cliente</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tipo_usuario" value="personal" {% if form.tipo_usuario.value == "personal" %}checked{% endif %}>
+              <span class="radio-checkmark"></span>
+              <span class="radio-label">Personal Trainer</span>
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn">Cadastrar</button>
+          <a href="{% url 'login' %}" class="back-link">Voltar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
