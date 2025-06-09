@@ -12,16 +12,24 @@ class Cliente(models.Model):
         return f"Cliente: {self.user.username}"
 
 
+class Especialidade(models.Model):
+    nome = models.CharField(max_length=255)
+    descricao = models.TextField()
+
+    def __str__(self):
+        return self.nome
+
+
 class PersonalTrainer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     telefone = models.CharField(max_length=20)
-    especialidades = models.TextField()
+    especialidades = models.ManyToManyField(Especialidade)  # 👍 correto agora
     precos = models.DecimalField(max_digits=6, decimal_places=2)
-    aprovado = models.BooleanField(default=False) 
-    
+    aprovado = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Personal Trainer: {self.user.username}"
+
     
 class Treino(models.Model):
     MODALIDADES = [
@@ -40,6 +48,7 @@ class Treino(models.Model):
     data_horario = models.DateTimeField()
     modalidade = models.CharField(max_length=20, choices=MODALIDADES)
     status = models.CharField(max_length=20, choices=STATUS)
+    observacoes = models.TextField(blank=True)
 
     def __str__(self):
         return f"Treino de {self.cliente.user.username} com {self.trainer.user.username} em {self.data_horario.strftime('%d/%m/%Y %H:%M')}"
@@ -64,14 +73,6 @@ class Exercicio(models.Model):
     def __str__(self):
         return f"Exercício: {self.nome}"
     
-class Especialidade(models.Model):
-    nome = models.CharField(max_length=255)
-    descricao = models.TextField()
-
-    def __str__(self):
-        return self.nome
-    
-
 
 class HorarioDisponivel(models.Model):
     trainer = models.ForeignKey(PersonalTrainer, on_delete=models.CASCADE, related_name='horarios_disponiveis')

@@ -1,0 +1,117 @@
+{% load static %}
+{% csrf_token %}
+<div id="atividades-modal" class="overlay">
+  <div class="atividades-container">
+    <h1 class="atividades-title">Atividades Clientes</h1>
+
+    <button onclick="fecharConteudo()" class="btn-fechar">Fechar</button>
+    <div class="atividades-tabela">
+      <div class="header">
+        <span>Atividade</span>
+        <span>Objetivo</span>
+        <span>Data</span>
+        <span>Horário</span>
+        <span>Personal</span>
+        <span></span>
+      </div>
+      {% for treino in treinos %}
+        <div class="linha">
+          <span class="status {{ treino.status }}">
+            {% if treino.status == "confirmado" %}
+              ✅ Concluído
+            {% elif treino.status == "cancelado" %}
+              🔄 Cancelado
+            {% else %}
+              ⏳ Pendente
+            {% endif %}
+          </span>
+
+          <span class="objetivo">{{ treino.trainer.especialidades.first.nome }}</span>
+          <span class="data">{{ treino.data_horario|date:"d M. Y" }}</span>
+          <span class="horario">{{ treino.data_horario|time:"H:i" }}</span>
+          <span class="personal"> {{ treino.trainer.user.first_name }}</span>
+          <span>
+            {% if treino.status != 'cancelado' %}
+              <button class="cancelar-treino" data-id="{{ treino.id }}">🗑️</button>
+            {% endif %}
+          </span>
+        </div>
+      {% empty %}
+        <p>Nenhuma atividade encontrada.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script src="{% static 'usuarios/js/atividade_cliente_ajax.js' %}"></script>
+<style>
+.overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 10000;
+}
+.atividades-container {
+  background: #f0f0f0;
+  border-radius: 20px;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.atividades-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #a64b2a;
+  text-shadow: 1px 1px white;
+}
+.atividades-tabela .header,
+.atividades-tabela .linha {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1.5fr 1.5fr 1.5fr 1fr;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  background: rgba(255,255,255,0.6);
+  padding: 10px;
+  border-radius: 12px;
+}
+.status.confirmado {
+  color: green;
+  font-weight: bold;
+}
+.status.cancelado {
+  color: red;
+  font-style: italic;
+}
+.status.pendente {
+  color: gray;
+}
+.objetivo {
+  font-weight: bold;
+  color: #555;
+}
+.btn-cancelar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.btn-fechar {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  float: right;
+}
+.btn-fechar:hover {
+  background-color: #c0392b;
+}
+
+</style>

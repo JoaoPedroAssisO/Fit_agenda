@@ -1,3 +1,27 @@
+<style>
+    .especialidades-wrapper {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    .especialidades-disponiveis, .especialidades-selecionadas {
+        flex: 1;
+    }
+    .especialidades-selecionadas ul {
+        list-style: none;
+        padding: 0;
+    }
+    .especialidades-selecionadas li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+        background: #f0f0f0;
+        padding: 5px;
+        border-radius: 4px;
+    }
+</style>
+
 <h2>Finalizar Cadastro - Personal Trainer</h2>
 
 <form method="POST">
@@ -7,9 +31,26 @@
         <legend>Informações do Personal Trainer</legend>
         {{ form.non_field_errors }}
         <p>
-            {{ form.especialidades.label_tag }}<br>
-            {{ form.especialidades }}
+            <label for="especialidades-select">Especialidades:</label><br>
+            <div class="especialidades-wrapper">
+                <div class="especialidades-disponiveis">
+                    <select id="especialidades-select">
+                        {% for especialidade in form.fields.especialidades.queryset %}
+                            <option value="{{ especialidade.id }}">{{ especialidade.nome }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" onclick="adicionarEspecialidade()">Adicionar</button>
+                </div>
+        
+                <div class="especialidades-selecionadas">
+                    <label>Selecionadas:</label>
+                    <ul id="especialidades-lista"></ul>
+                </div>
+            </div>
+            <!-- Campo hidden para enviar os IDs selecionados -->
+            <input type="hidden" name="especialidades" id="especialidades-hidden">
         </p>
+        
         <p>
             {{ form.precos.label_tag }}<br>
             {{ form.precos }}
@@ -17,32 +58,64 @@
     </fieldset>
 
     <fieldset>
-        <legend>Horários Disponíveis (Preencha apenas os dias e horários que trabalha)</legend>
+        <legend>Horários Disponíveis</legend>
         {{ formset.management_form }}
 
-        {% for horario_form in formset %}
-            <div style="border:1px solid #ddd; margin-bottom: 10px; padding: 10px;">
+        <table>
+            <tr>
+                <th>Dia</th>
+                <th>Manhã</th>
+                <th>Tarde</th>
+                <th>Noite</th>
+                <th>Excluir</th>
+            </tr>
+            {% for horario_form in formset %}
+            <tr>
+                <td><strong>{{ horario_form.instance.dia_semana|capfirst }}</strong></td>
+                <td>{{ horario_form.horario_inicio_manha }} - {{ horario_form.horario_fim_manha }}</td>
+                <td>{{ horario_form.horario_inicio_tarde }} - {{ horario_form.horario_fim_tarde }}</td>
+                <td>{{ horario_form.horario_inicio_noite }} - {{ horario_form.horario_fim_noite }}</td>
+                <td>{% if formset.can_delete %}{{ horario_form.DELETE }}{% endif %}</td>
 
-                <p>
-                    {{ horario_form.dia_semana.label_tag }}
-                    {{ horario_form.dia_semana }}
-                </p>
-                
-                <label>Manhã: </label>
-                {{ horario_form.horario_inicio_manha }} - {{ horario_form.horario_fim_manha }}<br>
-                
-                <label>Tarde: </label>
-                {{ horario_form.horario_inicio_tarde }} - {{ horario_form.horario_fim_tarde }}<br>
-                
-                <label>Noite: </label>
-                {{ horario_form.horario_inicio_noite }} - {{ horario_form.horario_fim_noite }}<br>
-
-                {% if formset.can_delete %}
-                    <label>Excluir: {{ horario_form.DELETE }}</label>
-                {% endif %}
-            </div>
-        {% endfor %}
+                {{ horario_form.id }}             {# <-- Campo oculto necessário para funcionamento do formset #}
+                {{ horario_form.dia_semana }}     {# Campo hidden para garantir o valor do dia #}
+            </tr>
+            {% endfor %}
+        </table>
     </fieldset>
 
     <button type="submit">Salvar</button>
 </form>
+
+<script>
+    const select = document.getElementById("especialidades-select");
+    const lista = document.getElementById("especialidades-lista");
+    const hiddenInput = document.getElementById("especialidades-hidden");
+    const selecionadas = new Set();
+
+    function adicionarEspecialidade() {
+        const id = select.value;
+        const nome = select.options[select.selectedIndex].text;
+
+        if (selecionadas.has(id)) return;
+
+        selecionadas.add(id);
+
+        const li = document.createElement("li");
+        li.dataset.id = id;
+        li.innerHTML = `${nome} <button type="button" onclick="removerEspecialidade('${id}', this)">Remover</button>`;
+        lista.appendChild(li);
+
+        atualizarHidden();
+    }
+
+    function removerEspecialidade(id, btn) {
+        selecionadas.delete(id);
+        btn.parentElement.remove();
+        atualizarHidden();
+    }
+
+    function atualizarHidden() {
+        hiddenInput.value = Array.from(selecionadas).join(",");
+    }
+</script>

@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Cliente</title>
+  <link rel="stylesheet" href="{% static 'usuarios/css/dashboard_cliente.css' %}">
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1 class="title">DashBoard <span>Cliente</span></h1>
+
+    <div class="button-group">
+      <a href="#" class="btn editar" onclick="carregarSecao('editar')">Editar Perfil</a>
+      <a href="#" class="btn agendar" onclick="carregarSecao('agendar')">Agendar Treino</a>
+      <a href="#" class="btn atividade" onclick="carregarSecao('atividade')">Atividade</a>
+      <a href="{% url 'logout' %}" class="btn sair">Sair</a>
+    </div>
+  </div>
+
+  <!-- AQUI FORA da estrutura dos botões -->
+  <div id="conteudo-ajax" class="ajax-overlay" style="display: none;"></div>
+
+  <script src="{% static 'usuarios/js/dashboard_cliente.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+{% load static %}
+<!-- DEBUG: {{ horarios|length }} horários carregados -->
+
+
+<div id="editar-personal-modal" class="overlay">
+  <div class="form-container">
+    <h1 class="form-title">Editar Personal</h1>
+    <form id="form-editar-dados-personal">
+      {% csrf_token %}
+
+      <!-- Preço -->
+      <label for="precos">Preço:</label>
+      <input type="number" step="0.01" name="precos" id="precos" value="{{ personal.precos }}" required />
+
+      <!-- Especialidades -->
+      <label for="especialidades">Especialidades:</label>
+      <div class="especialidades-group">
+        {% for esp in especializacoes %}
+          <label>
+            <input type="checkbox" name="especialidades" value="{{ esp.id }}"
+              {% if esp in personal.especialidades.all %}checked{% endif %}> {{ esp.nome }}
+          </label>
+        {% endfor %}
+      </div>
+
+      <h2 class="form-subtitle">Horários Disponíveis</h2>
+      {% for dia in horarios %}
+        <div class="dia-bloco">
+          <h3>{{ dia.get_dia_semana_display }}</h3>
+          <label>Manhã:</label>
+          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_manha|default_if_none:''|time:'H:i' }}">
+          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_fim_manha|default_if_none:''|time:'H:i' }}">
+        
+
+          <label>Tarde:</label>
+          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_tarde|default_if_none:''|time:'H:i' }}">
+          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_fim_tarde|default_if_none:''|time:'H:i' }}">
+          
+
+          <label>Noite:</label>
+          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_noite|default_if_none:''|time:'H:i' }}">
+          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_fim_noite|default_if_none:''|time:'H:i' }}">
+        </div>
+      {% endfor %}
+
+      <div class="form-buttons">
+        <button type="button" onclick="fecharConteudo()">Fechar</button>
+        <button type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'usuarios/js/editar_dados_personal_ajax.js' %}"></script>
+
+<style>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+.form-container {
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 30px;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.form-title {
+  text-align: center;
+  font-size: 28px;
+  color: #a64b2a;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px white;
+}
+
+.form-subtitle {
+  margin-top: 30px;
+  font-size: 20px;
+  color: #444;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="number"], input[type="time"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.especialidades-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.dia-bloco {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.form-buttons button {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-buttons button[type="button"] {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #90ee90;
+  color: black;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #7cd67c;
+}
+</style>

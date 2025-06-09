@@ -1,0 +1,126 @@
+/* usuarios/static/css/dashboard_cliente_ajax.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('../img/fundo_cliente.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.dashboard-container {
+  padding: 50px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: bold;
+  color: black;
+  text-shadow: 1px 1px 0px #ff5a00;
+}
+
+.title span {
+  display: block;
+  font-size: 48px;
+  font-weight: bold;
+  color: #b36d3a;
+  text-shadow: 1px 1px 0px black;
+}
+
+.button-group {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 200px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 1px solid black;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn.editar {
+  background-color: #d38c5f;
+}
+
+.btn.agendar,
+.btn.atividade {
+  background-color: #90ee90;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  text-align: center;
+}
+
+.btn.sair {
+  background-color: #e74c3c;
+  color: white;
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sobreposição AJAX (camada escura com centralização) */
+.ajax-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* escurece levemente o fundo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Conteúdo modal centralizado */
+.ajax-modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+}
+
+#conteudo-ajax {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.4); /* leve escurecimento de fundo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+/* ✅ Estilo do conteúdo do formulário AJAX */
+#conteudo-ajax form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 500px;
+}

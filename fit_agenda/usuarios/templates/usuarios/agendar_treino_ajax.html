@@ -1,0 +1,165 @@
+{% load static %}
+<div id="agendar-modal" class="overlay">
+  <div class="form-container">
+    <h1 class="form-title">Agendar Treino</h1>
+    <form id="form-agendar-treino">
+      {% csrf_token %}
+
+      <!-- Especialidade -->
+      <label>Especialidade:</label>
+      <select name="especializacao" id="especializacao" required>
+        <option value="">Selecione</option>
+        {% for esp in especializacoes %}
+          <option value="{{ esp.id }}">{{ esp.nome }}</option>
+        {% endfor %}
+      </select>
+
+      <!-- Personal / Preço -->
+      <label>Personal / Preço:</label>
+      <select name="personal" id="personal" required>
+        <option value="">Selecione</option>
+        {% for trainer in trainers %}
+          <option value="{{ trainer.id }}">{{ trainer.user.get_full_name }} / R$ {{ trainer.precos|floatformat:2 }}</option>
+        {% endfor %}
+      </select>
+
+      <!-- Data -->
+      <label>Data do treino:</label>
+      <input type="date" id="data" name="data" required />
+
+      <!-- Botão para ver dia da semana -->
+      <button type="button" id="ver-dia-semana" class="button-full">Ver Dia da Semana</button>
+
+      <!-- Espaço para mostrar os horários -->
+      <div id="espaco-info" class="times"></div>
+
+      <!-- Modalidade -->
+      <label>Modalidade:</label>
+      <div class="mode-select">
+        <label><input type="radio" name="modalidade" value="online" required /> Online</label>
+        <label><input type="radio" name="modalidade" value="presencial" required /> Presencial</label>
+      </div>
+
+      <div class="form-buttons">
+        <button type="button" onclick="fecharConteudo()">Fechar</button>
+        <button type="submit">Agendar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'usuarios/js/agendar_treino_ajax.js' %}"></script>
+
+<style>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+.form-container {
+  background-color: #999;
+  border-radius: 20px;
+  padding: 30px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-title {
+  margin-top: 0;
+  color: black;
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+select,
+input[type="date"],
+.button-full {
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: white;
+  font-size: 14px;
+  margin-top: 10px;
+  width: 90%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.button-full {
+  font-weight: bold;
+}
+
+.mode-select {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 14px;
+  margin-top: 20px;
+  color: black;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding: 0 10px;
+}
+
+.form-buttons button {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-buttons button[type="button"] {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #90ee90;
+  color: black;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #7cd67c;
+}
+
+/* Horários */
+.times {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.time-slot {
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: 0.2s;
+  font-weight: bold;
+}
+
+.time-slot.selected {
+  background-color: #90ee90;
+}
+</style>

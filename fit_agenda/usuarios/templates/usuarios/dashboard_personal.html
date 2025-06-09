@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Personal</title>
+  <link rel="stylesheet" href="{% static 'usuarios/css/dashboard_cliente.css' %}">
+  <style>
+    .agenda-box {
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 1000px;
+      margin: -200px auto 60px;
+    }
+
+    .agenda-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #a64b2a;
+    }
+
+    .agenda-lista {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .item-agenda {
+      background-color: #f9f9f9;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-size: 14px;
+    }
+
+    .item-agenda .cliente {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .item-agenda .info {
+      color: #666;
+    }
+
+    .status-confirmado {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-cancelado {
+      color: red;
+      font-style: italic;
+    }
+
+    .status-concluido {
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1 class="title">DashBoard <span>Personal</span></h1>
+
+    <div class="button-group">
+      <a href="#" class="btn editar" onclick="carregarSecao('editar_personal')">Editar Perfil</a>
+      <a href="#" class="btn agendar" onclick="carregarSecao('editar_dados')">Editar Personal</a>
+      <a href="{% url 'logout' %}" class="btn sair">Sair</a>
+    </div>
+
+    <!-- Agenda Box -->
+    <div class="agenda-box">
+      <h2>Treinos Agendados com Clientes</h2>
+      <div class="agenda-lista">
+        {% for treino in treinos %}
+          <div class="item-agenda">
+            <span class="cliente">👤 {{ treino.cliente.user.get_full_name }}</span>
+            <span class="info">
+              📅 {{ treino.data_horario|date:"d/m/Y" }} ⏰ {{ treino.data_horario|time:"H:i" }} |
+              🧍 Modalidade: {{ treino.get_modalidade_display }} |
+              <span class="status-{{ treino.status }}">{{ treino.get_status_display }}</span>
+            </span>
+          </div>
+        {% empty %}
+          <p style="text-align:center;">Nenhum treino agendado até o momento.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div id="conteudo-ajax" class="ajax-overlay" style="display: none;"></div>
+
+</body>
+</html>
+
+<script src="{% static 'usuarios/js/dashboard_personal.js' %}"></script>

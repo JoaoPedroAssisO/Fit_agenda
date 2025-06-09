@@ -1,0 +1,108 @@
+<div id="selecionar-horario-modal" class="overlay">
+  <div class="form-container">
+    <h2 class="titulo">Selecionar Data e Horário</h2>
+
+    <label for="data">Escolha uma data:</label>
+    <input type="date" id="data" name="data" required>
+
+    <div id="horarios-container" style="margin-top: 20px;">
+      <h3>Horários disponíveis:</h3>
+      <table id="tabela-horarios">
+        <thead>
+          <tr>
+            <th>Turno</th>
+            <th>Início</th>
+            <th>Fim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Horários serão preenchidos via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="botoes">
+      <button onclick="fecharConteudo()">Cancelar</button>
+      <button id="confirmar-horario">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Sobreposição */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+/* Container */
+.form-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Título */
+.titulo {
+  margin-bottom: 20px;
+}
+
+/* Input */
+input[type="date"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 60%;
+  margin-top: 10px;
+}
+
+/* Tabela */
+table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+/* Botões */
+.botoes {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.botoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.botoes button:first-child {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.botoes button:last-child {
+  background-color: #2ecc71;
+  color: white;
+}
+</style>
