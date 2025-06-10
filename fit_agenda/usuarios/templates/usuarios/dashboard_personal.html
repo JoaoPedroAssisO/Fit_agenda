@@ -68,8 +68,9 @@
     <h1 class="title">DashBoard <span>Personal</span></h1>
 
     <div class="button-group">
-      <a href="#" class="btn editar" onclick="carregarSecao('editar_personal')">Editar Perfil</a>
-      <a href="#" class="btn agendar" onclick="carregarSecao('editar_dados')">Editar Personal</a>
+      <a href="#" onclick="carregarSecao('editar_personal')" class="btn editar">Editar Perfil</a>
+      <a href="#" onclick="carregarSecao('editar_dados')" class="btn agendar">Editar Personal</a>
+
       <a href="{% url 'logout' %}" class="btn sair">Sair</a>
     </div>
 
@@ -78,7 +79,7 @@
       <h2>Treinos Agendados com Clientes</h2>
       <div class="agenda-lista">
         {% for treino in treinos %}
-          <div class="item-agenda">
+          <div class="item-agenda" onclick="abrirFormularioExercicio('{{ treino.id }}')">
             <span class="cliente">👤 {{ treino.cliente.user.get_full_name }}</span>
             <span class="info">
               📅 {{ treino.data_horario|date:"d/m/Y" }} ⏰ {{ treino.data_horario|time:"H:i" }} |

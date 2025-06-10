@@ -1,8 +1,11 @@
 function iniciarEditarDadosPersonal() {
   console.log("🛠️ Editar dados do personal carregado");
 
-  const form = document.getElementById("form-editar-personal");
-  if (!form) return;
+  const form = document.getElementById("form-editar-dados-personal");
+  if (!form) {
+    console.warn("⚠️ Formulário de edição de dados do personal não encontrado.");
+    return;
+  }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -18,6 +21,11 @@ function iniciarEditarDadosPersonal() {
 
     formData.append("especialidades_ids", especialidades.join(","));
 
+    console.log("📤 Enviando dados:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     fetch("/usuarios/personal/editar-dados/", {
       method: "POST",
       headers: {
@@ -27,11 +35,18 @@ function iniciarEditarDadosPersonal() {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert(data.mensagem);
-        fecharConteudo();
+        if (data.mensagem) {
+          alert("✅ " + data.mensagem);
+          console.log("✅ Dados salvos com sucesso!");
+          fecharConteudo();
+        } else if (data.erro) {
+          alert("❌ Erro: " + data.erro);
+          console.error("❌ Erro retornado:", data.erro);
+        }
       })
-      .catch(() => {
-        alert("Erro ao salvar os dados do personal.");
+      .catch((err) => {
+        alert("❌ Erro ao salvar os dados do personal.");
+        console.error("❌ Erro de requisição:", err);
       });
   });
 }

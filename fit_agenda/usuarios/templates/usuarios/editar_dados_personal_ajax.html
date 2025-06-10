@@ -26,21 +26,23 @@
       <h2 class="form-subtitle">Horários Disponíveis</h2>
       {% for dia in horarios %}
         <div class="dia-bloco">
-          <h3>{{ dia.get_dia_semana_display }}</h3>
-          <label>Manhã:</label>
-          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_manha|default_if_none:''|time:'H:i' }}">
-          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_fim_manha|default_if_none:''|time:'H:i' }}">
-        
+         <h3>{{ dia.get_dia_semana_display }}</h3>
 
-          <label>Tarde:</label>
-          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_tarde|default_if_none:''|time:'H:i' }}">
-          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_fim_tarde|default_if_none:''|time:'H:i' }}">
-          
+        <label>Manhã:</label>
+        <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_manha|default_if_none:''|time:'H:i' }}">
+        <input type="time" name="manha_fim_{{ dia.id }}" value="{{ dia.horario_fim_manha|default_if_none:''|time:'H:i' }}">
 
-          <label>Noite:</label>
-          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_noite|default_if_none:''|time:'H:i' }}">
-          <input type="time" name="manha_inicio_{{ dia.id }}" value="{{ dia.horario_fim_noite|default_if_none:''|time:'H:i' }}">
-        </div>
+
+        <label>Tarde:</label>
+        <input type="time" name="tarde_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_tarde|default_if_none:''|time:'H:i' }}">
+        <input type="time" name="tarde_fim_{{ dia.id }}" value="{{ dia.horario_fim_tarde|default_if_none:''|time:'H:i' }}">
+
+
+        <label>Noite:</label>
+        <input type="time" name="noite_inicio_{{ dia.id }}" value="{{ dia.horario_inicio_noite|default_if_none:''|time:'H:i' }}">
+        <input type="time" name="noite_fim_{{ dia.id }}" value="{{ dia.horario_fim_noite|default_if_none:''|time:'H:i' }}">
+
+
       {% endfor %}
 
       <div class="form-buttons">

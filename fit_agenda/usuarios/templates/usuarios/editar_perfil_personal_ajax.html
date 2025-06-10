@@ -2,7 +2,7 @@
 <div id="editar-modal" class="overlay">
   <div class="form-container">
     <h1 class="form-title">Editar Perfil</h1>
-    <form id="form-editar-personal">
+    <form id="form-editar-dados-personal" method="post">
       {% csrf_token %}
 
       <label>Primeiro nome:</label>
@@ -22,7 +22,8 @@
   </div>
 </div>
 
-<script src="{% static 'usuarios/js/editar_perfil_personal_ajax.js' %}"></script>
+<script src="{% static 'usuarios/js/editar_dados_personal_ajax.js' %}"></script>
+
 
 
 <style>

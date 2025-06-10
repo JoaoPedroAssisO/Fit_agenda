@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import modelformset_factory
 from .forms import UserForm, ClienteForm, CadastroGeralForm, FinalizarCadastroClienteForm, FinalizarCadastroPersonalForm, HorarioDisponivelForm
-from .models import Cliente, PersonalTrainer, HorarioDisponivel, Treino, Especialidade
+from .models import Cliente, PersonalTrainer, HorarioDisponivel, Treino, Especialidade, PlanoTreino, Exercicio
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 import json
@@ -526,6 +526,48 @@ def editar_dados_form(request):
         'especializacoes': especializacoes,
         'horarios': horarios,
     })
+
+
+@login_required
+def exercicio_form_ajax(request, treino_id):
+    # Verifica se o treino existe e passa ele para o template
+    treino = get_object_or_404(Treino, id=treino_id)
+    return render(request, 'usuarios/exercicio_form_ajax.html', {'treino': treino})
+
+@require_POST
+@login_required
+def salvar_exercicio_ajax(request):
+    try:
+        nome = request.POST.get('nome')
+        series = request.POST.get('series')
+        repeticoes = request.POST.get('repeticoes')
+        carga = request.POST.get('carga')
+        treino_id = request.POST.get('treino_id')
+
+        if not all([nome, series, repeticoes, carga, treino_id]):
+            return JsonResponse({'erro': 'Preencha todos os campos.'}, status=400)
+
+        treino = Treino.objects.get(id=treino_id)
+
+        exercicio = Exercicio.objects.create(
+            treino=treino,
+            nome=nome,
+            series=series,
+            repeticoes=repeticoes,
+            carga=carga
+        )
+
+        return JsonResponse({'mensagem': 'Exercício salvo com sucesso!'})
+
+    except Treino.DoesNotExist:
+        return JsonResponse({'erro': 'Treino não encontrado.'}, status=404)
+    except Exception as e:
+        return JsonResponse({'erro': str(e)}, status=500)
+    
+
+    
+
+
 
 
 

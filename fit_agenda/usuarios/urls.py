@@ -20,5 +20,6 @@ urlpatterns = [
     path('personal/editar_perfil/', views.editar_perfil_personal, name='editar_perfil_personal'),
     path('personal/editar-dados/', views.editar_dados_personal, name='editar_dados_personal'),
     path('personal/editar-dados-form/', views.editar_dados_form, name='editar_dados_form'),
-
+    path('personal/exercicio-form/<int:treino_id>/', views.exercicio_form_ajax, name='exercicio_form_ajax'),
+    path('personal/salvar-exercicio/', views.salvar_exercicio_ajax, name='salvar_exercicio_ajax'),
 ]
